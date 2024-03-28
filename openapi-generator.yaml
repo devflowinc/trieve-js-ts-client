@@ -1,0 +1,7 @@
+projectName: "trieve-js-ts-client"
+projectDescription: "JS and TS client for Trieve API generated from its OpenAPI specification using openapi-generator."
+licenseName: "MIT"
+projectVersion: "0.5.0"
+enablePostProcessFile: true
+generateAliasAsModel: true
+outputDir: "./"
