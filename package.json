@@ -1,5 +1,5 @@
 {
-  "name": "trieve-js-ts-client",
+  "name": "@devflowinc/trieve-js-ts-client",
   "version": "0.5.0",
   "description": "JS and TS client for Trieve API generated from its OpenAPI specification using openapi-generator.",
   "license": "MIT",
@@ -42,5 +42,25 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devflowinc/trieve-js-ts-client.git"
+  },
+  "keywords": [
+    "trieve",
+    "search",
+    "recommendations",
+    "rust",
+    "openapi"
+  ],
+  "author": "Trieve",
+  "bugs": {
+    "url": "https://github.com/devflowinc/trieve-js-ts-client/issues"
+  },
+  "homepage": "https://github.com/devflowinc/trieve-js-ts-client#readme"
 }
