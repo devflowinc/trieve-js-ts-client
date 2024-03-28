@@ -7,3 +7,4 @@ withNodeImports: true
 enablePostProcessFile: true
 generateAliasAsModel: true
 outputDir: "./"
+apiDocs: true
