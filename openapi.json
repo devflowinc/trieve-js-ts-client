@@ -1100,6 +1100,17 @@
         "summary": "Search Over Groups",
         "description": "Search Over Groups\n\nThis route allows you to get groups as results instead of chunks. Each group returned will have the matching chunks sorted by similarity within the group. This is useful for when you want to get groups of chunks which are similar to the search query. If choosing hybrid search, the results will be re-ranked using BAAI/bge-reranker-large. Compatible with semantic, fulltext, or hybrid search modes.",
         "operationId": "search_over_groups",
+        "parameters": [
+          {
+            "name": "TR-Dataset",
+            "in": "header",
+            "description": "The dataset id to use for the request",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "JSON request payload to semantically search over groups",
           "content": {
@@ -4103,10 +4114,10 @@
                 "value4"
               ],
               "range": {
-                "gt": 0,
-                "gte": 0,
-                "lt": 1,
-                "lte": 1
+                "gt": 0.0,
+                "gte": 0.0,
+                "lt": 1.0,
+                "lte": 1.0
               }
             }
           ],
@@ -4118,10 +4129,10 @@
                 "value6"
               ],
               "range": {
-                "gt": 0,
-                "gte": 0,
-                "lt": 1,
-                "lte": 1
+                "gt": 0.0,
+                "gte": 0.0,
+                "lt": 1.0,
+                "lte": 1.0
               }
             }
           ],
@@ -4133,10 +4144,10 @@
                 "value2"
               ],
               "range": {
-                "gt": 0,
-                "gte": 0,
-                "lt": 1,
-                "lte": 1
+                "gt": 0.0,
+                "gte": 0.0,
+                "lt": 1.0,
+                "lte": 1.0
               }
             }
           ]
@@ -5029,10 +5040,10 @@
             "value2"
           ],
           "range": {
-            "gt": 0,
-            "gte": 0,
-            "lt": 1,
-            "lte": 1
+            "gt": 0.0,
+            "gte": 0.0,
+            "lt": 1.0,
+            "lte": 1.0
           }
         }
       },
@@ -5522,10 +5533,10 @@
           }
         },
         "example": {
-          "gt": 0,
-          "gte": 0,
-          "lt": 1,
-          "lte": 1
+          "gt": 0.0,
+          "gte": 0.0,
+          "lt": 1.0,
+          "lte": 1.0
         }
       },
       "ReccomendGroupChunksRequest": {
@@ -5586,6 +5597,11 @@
             },
             "description": "The  ids of the groups to be used as positive examples for the recommendation. The groups in this array will be used to find similar groups.",
             "nullable": true
+          },
+          "slim_chunks": {
+            "type": "boolean",
+            "description": "Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.",
+            "nullable": true
           }
         }
       },
@@ -5639,6 +5655,11 @@
               "type": "string"
             },
             "description": "The tracking_ids of the chunks to be used as positive examples for the recommendation. The chunks in this array will be used to find similar chunks.",
+            "nullable": true
+          },
+          "slim_chunks": {
+            "type": "boolean",
+            "description": "Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.",
             "nullable": true
           }
         }
@@ -5791,6 +5812,11 @@
             "type": "string",
             "description": "Can be either \"semantic\", \"fulltext\", or \"hybrid\". \"hybrid\" will pull in one page (10 chunks) of both semantic and full-text results then re-rank them using BAAI/bge-reranker-large. \"semantic\" will pull in one page (10 chunks) of the nearest cosine distant vectors. \"fulltext\" will pull in one page (10 chunks) of full-text results based on SPLADE."
           },
+          "slim_chunks": {
+            "type": "boolean",
+            "description": "Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.",
+            "nullable": true
+          },
           "use_weights": {
             "type": "boolean",
             "description": "Set use_weights to true to use the weights of the chunks in the result set in order to sort them. If not specified, this defaults to true.",
@@ -5808,10 +5834,10 @@
                   "value4"
                 ],
                 "range": {
-                  "gt": 0,
-                  "gte": 0,
-                  "lt": 1,
-                  "lte": 1
+                  "gt": 0.0,
+                  "gte": 0.0,
+                  "lt": 1.0,
+                  "lte": 1.0
                 }
               }
             ],
@@ -5823,10 +5849,10 @@
                   "value6"
                 ],
                 "range": {
-                  "gt": 0,
-                  "gte": 0,
-                  "lt": 1,
-                  "lte": 1
+                  "gt": 0.0,
+                  "gte": 0.0,
+                  "lt": 1.0,
+                  "lte": 1.0
                 }
               }
             ],
@@ -5838,10 +5864,10 @@
                   "value2"
                 ],
                 "range": {
-                  "gt": 0,
-                  "gte": 0,
-                  "lt": 1,
-                  "lte": 1
+                  "gt": 0.0,
+                  "gte": 0.0,
+                  "lt": 1.0,
+                  "lte": 1.0
                 }
               }
             ]
@@ -5970,6 +5996,11 @@
           "search_type": {
             "type": "string",
             "description": "Can be either \"semantic\", \"fulltext\", or \"hybrid\". \"hybrid\" will pull in one page (10 chunks) of both semantic and full-text results then re-rank them using BAAI/bge-reranker-large. \"semantic\" will pull in one page (10 chunks) of the nearest cosine distant vectors. \"fulltext\" will pull in one page (10 chunks) of full-text results based on SPLADE."
+          },
+          "slim_chunks": {
+            "type": "boolean",
+            "description": "Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.",
+            "nullable": true
           }
         }
       },
@@ -6063,6 +6094,11 @@
           "search_type": {
             "type": "string",
             "description": "Search_type can be either \"semantic\", \"fulltext\", or \"hybrid\". \"hybrid\" will pull in one page (10 chunks) of both semantic and full-text results then re-rank them using BAAI/bge-reranker-large. \"semantic\" will pull in one page (10 chunks) of the nearest cosine distant vectors. \"fulltext\" will pull in one page (10 chunks) of full-text results based on SPLADE."
+          },
+          "slim_chunks": {
+            "type": "boolean",
+            "description": "Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.",
+            "nullable": true
           },
           "use_weights": {
             "type": "boolean",

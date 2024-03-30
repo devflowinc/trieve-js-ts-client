@@ -1657,6 +1657,12 @@ export interface ReccomendGroupChunksRequest {
    * @memberof ReccomendGroupChunksRequest
    */
   positive_group_tracking_ids?: Array<string> | null;
+  /**
+   * Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.
+   * @type {boolean}
+   * @memberof ReccomendGroupChunksRequest
+   */
+  slim_chunks?: boolean | null;
 }
 /**
  *
@@ -1700,6 +1706,12 @@ export interface RecommendChunksRequest {
    * @memberof RecommendChunksRequest
    */
   positive_tracking_ids?: Array<string> | null;
+  /**
+   * Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.
+   * @type {boolean}
+   * @memberof RecommendChunksRequest
+   */
+  slim_chunks?: boolean | null;
 }
 /**
  *
@@ -1832,6 +1844,12 @@ export interface SearchChunkData {
    */
   search_type: string;
   /**
+   * Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.
+   * @type {boolean}
+   * @memberof SearchChunkData
+   */
+  slim_chunks?: boolean | null;
+  /**
    * Set use_weights to true to use the weights of the chunks in the result set in order to sort them. If not specified, this defaults to true.
    * @type {boolean}
    * @memberof SearchChunkData
@@ -1948,6 +1966,12 @@ export interface SearchOverGroupsData {
    * @memberof SearchOverGroupsData
    */
   search_type: string;
+  /**
+   * Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.
+   * @type {boolean}
+   * @memberof SearchOverGroupsData
+   */
+  slim_chunks?: boolean | null;
 }
 /**
  *
@@ -2040,6 +2064,12 @@ export interface SearchWithinGroupData {
    * @memberof SearchWithinGroupData
    */
   search_type: string;
+  /**
+   * Set slim_chunks to true to avoid returning the content and chunk_html of the chunks. This is useful for when you want to reduce amount of data over the wire for latency improvement. Default is false.
+   * @type {boolean}
+   * @memberof SearchWithinGroupData
+   */
+  slim_chunks?: boolean | null;
   /**
    * Set use_weights to true to use the weights of the chunks in the result set in order to sort them. If not specified, this defaults to true.
    * @type {boolean}
@@ -5617,14 +5647,18 @@ export const ChunkGroupApiAxiosParamCreator = function (
     /**
      * Search Over Groups  This route allows you to get groups as results instead of chunks. Each group returned will have the matching chunks sorted by similarity within the group. This is useful for when you want to get groups of chunks which are similar to the search query. If choosing hybrid search, the results will be re-ranked using BAAI/bge-reranker-large. Compatible with semantic, fulltext, or hybrid search modes.
      * @summary Search Over Groups
+     * @param {string} tRDataset The dataset id to use for the request
      * @param {SearchOverGroupsData} searchOverGroupsData JSON request payload to semantically search over groups
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     searchOverGroups: async (
+      tRDataset: string,
       searchOverGroupsData: SearchOverGroupsData,
       options: RawAxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
+      // verify required parameter 'tRDataset' is not null or undefined
+      assertParamExists("searchOverGroups", "tRDataset", tRDataset);
       // verify required parameter 'searchOverGroupsData' is not null or undefined
       assertParamExists(
         "searchOverGroups",
@@ -5646,6 +5680,10 @@ export const ChunkGroupApiAxiosParamCreator = function (
       };
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
+
+      if (tRDataset != null) {
+        localVarHeaderParameter["TR-Dataset"] = String(tRDataset);
+      }
 
       localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -6363,11 +6401,13 @@ export const ChunkGroupApiFp = function (configuration?: Configuration) {
     /**
      * Search Over Groups  This route allows you to get groups as results instead of chunks. Each group returned will have the matching chunks sorted by similarity within the group. This is useful for when you want to get groups of chunks which are similar to the search query. If choosing hybrid search, the results will be re-ranked using BAAI/bge-reranker-large. Compatible with semantic, fulltext, or hybrid search modes.
      * @summary Search Over Groups
+     * @param {string} tRDataset The dataset id to use for the request
      * @param {SearchOverGroupsData} searchOverGroupsData JSON request payload to semantically search over groups
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     async searchOverGroups(
+      tRDataset: string,
       searchOverGroupsData: SearchOverGroupsData,
       options?: RawAxiosRequestConfig,
     ): Promise<
@@ -6378,6 +6418,7 @@ export const ChunkGroupApiFp = function (configuration?: Configuration) {
     > {
       const localVarAxiosArgs =
         await localVarAxiosParamCreator.searchOverGroups(
+          tRDataset,
           searchOverGroupsData,
           options,
         );
@@ -6759,16 +6800,18 @@ export const ChunkGroupApiFactory = function (
     /**
      * Search Over Groups  This route allows you to get groups as results instead of chunks. Each group returned will have the matching chunks sorted by similarity within the group. This is useful for when you want to get groups of chunks which are similar to the search query. If choosing hybrid search, the results will be re-ranked using BAAI/bge-reranker-large. Compatible with semantic, fulltext, or hybrid search modes.
      * @summary Search Over Groups
+     * @param {string} tRDataset The dataset id to use for the request
      * @param {SearchOverGroupsData} searchOverGroupsData JSON request payload to semantically search over groups
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     searchOverGroups(
+      tRDataset: string,
       searchOverGroupsData: SearchOverGroupsData,
       options?: any,
     ): AxiosPromise<SearchOverGroupsResponseBody> {
       return localVarFp
-        .searchOverGroups(searchOverGroupsData, options)
+        .searchOverGroups(tRDataset, searchOverGroupsData, options)
         .then((request) => request(axios, basePath));
     },
     /**
@@ -7108,17 +7151,19 @@ export class ChunkGroupApi extends BaseAPI {
   /**
    * Search Over Groups  This route allows you to get groups as results instead of chunks. Each group returned will have the matching chunks sorted by similarity within the group. This is useful for when you want to get groups of chunks which are similar to the search query. If choosing hybrid search, the results will be re-ranked using BAAI/bge-reranker-large. Compatible with semantic, fulltext, or hybrid search modes.
    * @summary Search Over Groups
+   * @param {string} tRDataset The dataset id to use for the request
    * @param {SearchOverGroupsData} searchOverGroupsData JSON request payload to semantically search over groups
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof ChunkGroupApi
    */
   public searchOverGroups(
+    tRDataset: string,
     searchOverGroupsData: SearchOverGroupsData,
     options?: RawAxiosRequestConfig,
   ) {
     return ChunkGroupApiFp(this.configuration)
-      .searchOverGroups(searchOverGroupsData, options)
+      .searchOverGroups(tRDataset, searchOverGroupsData, options)
       .then((request) => request(this.axios, this.basePath));
   }
 
