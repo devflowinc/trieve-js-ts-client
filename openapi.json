@@ -12,16 +12,16 @@
       "name": "BSL",
       "url": "https://github.com/devflowinc/trieve/blob/main/LICENSE.txt"
     },
-    "version": "0.5.0"
+    "version": "0.5.1"
   },
   "servers": [
     {
-      "url": "http://localhost:8090",
-      "description": "Local development server"
-    },
-    {
       "url": "https://api.trieve.ai",
       "description": "Production server"
+    },
+    {
+      "url": "http://localhost:8090",
+      "description": "Local development server"
     }
   ],
   "paths": {
@@ -422,14 +422,11 @@
         },
         "responses": {
           "200": {
-            "description": "JSON response payload containing chunks with scores which are similar to those in the request body",
+            "description": "Chunks with embedding vectors which are similar to those in the request body",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChunkMetadataWithFileData"
-                  }
+                  "$ref": "#/components/schemas/RecommendChunksResponseTypes"
                 }
               }
             }
@@ -486,11 +483,11 @@
         },
         "responses": {
           "200": {
-            "description": "chunks which are similar to the embedding vector of the search query",
+            "description": "Chunks with embedding vectors which are similar to those in the request body",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchChunkQueryResponseBody"
+                  "$ref": "#/components/schemas/SearchChunkResponseTypes"
                 }
               }
             }
@@ -1128,7 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchOverGroupsResponseBody"
+                  "$ref": "#/components/schemas/SearchOverGroupsResponseTypes"
                 }
               }
             }
@@ -1178,14 +1175,11 @@
         },
         "responses": {
           "200": {
-            "description": "JSON response payload containing chunks with scores which are similar to those in the request body",
+            "description": "JSON body representing the groups which are similar to the groups in the request",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupScoreChunkDTO"
-                  }
+                  "$ref": "#/components/schemas/RecommendGroupChunkResponseTypes"
                 }
               }
             }
@@ -1246,7 +1240,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchGroupsResult"
+                  "$ref": "#/components/schemas/SearchWithinGroupResponseTypes"
                 }
               }
             }
@@ -4114,10 +4108,10 @@
                 "value4"
               ],
               "range": {
-                "gt": 0.0,
-                "gte": 0.0,
-                "lt": 1.0,
-                "lte": 1.0
+                "gt": 0,
+                "gte": 0,
+                "lt": 1,
+                "lte": 1
               }
             }
           ],
@@ -4129,10 +4123,10 @@
                 "value6"
               ],
               "range": {
-                "gt": 0.0,
-                "gte": 0.0,
-                "lt": 1.0,
-                "lte": 1.0
+                "gt": 0,
+                "gte": 0,
+                "lt": 1,
+                "lte": 1
               }
             }
           ],
@@ -4144,10 +4138,10 @@
                 "value2"
               ],
               "range": {
-                "gt": 0.0,
-                "gte": 0.0,
-                "lt": 1.0,
-                "lte": 1.0
+                "gt": 0,
+                "gte": 0,
+                "lt": 1,
+                "lte": 1
               }
             }
           ]
@@ -5040,10 +5034,10 @@
             "value2"
           ],
           "range": {
-            "gt": 0.0,
-            "gte": 0.0,
-            "lt": 1.0,
-            "lte": 1.0
+            "gt": 0,
+            "gte": 0,
+            "lt": 1,
+            "lte": 1
           }
         }
       },
@@ -5307,6 +5301,71 @@
               "$ref": "#/components/schemas/ScoreChunkDTO"
             }
           }
+        },
+        "example": {
+          "group_id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+          "metadata": [
+            {
+              "metadata": [
+                {
+                  "content": "This is a test content",
+                  "id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                  "link": "https://www.google.com",
+                  "metadata": {
+                    "key": "value"
+                  },
+                  "tag_set": "test",
+                  "time_stamp": "2021-01-01T00:00:00Z",
+                  "tracking_id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                  "weight": 1
+                }
+              ],
+              "score": 0.5
+            }
+          ]
+        }
+      },
+      "GroupSlimChunksDTO": {
+        "type": "object",
+        "required": [
+          "group_id",
+          "metadata"
+        ],
+        "properties": {
+          "group_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScoreSlimChunks"
+            }
+          }
+        },
+        "example": {
+          "group_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+          "metadata": [
+            {
+              "metadata": [
+                {
+                  "created_at": "2021-01-01T00:00:00",
+                  "id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                  "link": "https://trieve.ai",
+                  "metadata": {
+                    "key": "value"
+                  },
+                  "qdrant_point_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                  "tag_set": "tag1,tag2",
+                  "time_stamp": "2021-01-01T00:00:00",
+                  "tracking_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                  "updated_at": "2021-01-01T00:00:00",
+                  "weight": 0.5
+                }
+              ],
+              "score": 0.5
+            }
+          ]
         }
       },
       "InvitationData": {
@@ -5533,10 +5592,10 @@
           }
         },
         "example": {
-          "gt": 0.0,
-          "gte": 0.0,
-          "lt": 1.0,
-          "lte": 1.0
+          "gt": 0,
+          "gte": 0,
+          "lt": 1,
+          "lte": 1
         }
       },
       "ReccomendGroupChunksRequest": {
@@ -5664,6 +5723,119 @@
           }
         }
       },
+      "RecommendChunksResponseTypes": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChunkMetadata"
+            },
+            "example": [
+              {
+                "chunk_html": "<p>Hello, world!</p>",
+                "content": "Hello, world!",
+                "created_at": "2021-01-01T00:00:00",
+                "dataset_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "link": "https://trieve.ai",
+                "metadata": {
+                  "key": "value"
+                },
+                "qdrant_point_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "tag_set": "tag1,tag2",
+                "time_stamp": "2021-01-01T00:00:00",
+                "tracking_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "updated_at": "2021-01-01T00:00:00",
+                "weight": 0.5
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SlimChunkMetadata"
+            },
+            "example": [
+              {
+                "created_at": "2021-01-01T00:00:00",
+                "dataset_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "link": "https://trieve.ai",
+                "metadata": {
+                  "key": "value"
+                },
+                "qdrant_point_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "tag_set": "tag1,tag2",
+                "time_stamp": "2021-01-01T00:00:00",
+                "tracking_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "updated_at": "2021-01-01T00:00:00",
+                "weight": 0.5
+              }
+            ]
+          }
+        ]
+      },
+      "RecommendGroupChunkResponseTypes": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupSlimChunksDTO"
+            },
+            "example": [
+              {
+                "group_id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                "metadata": [
+                  {
+                    "metadata": [
+                      {
+                        "content": "This is a test content",
+                        "id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                        "link": "https://www.google.com",
+                        "metadata": {
+                          "key": "value"
+                        },
+                        "tag_set": "test",
+                        "time_stamp": "2021-01-01T00:00:00Z",
+                        "tracking_id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                        "weight": 1
+                      }
+                    ],
+                    "score": 0.5
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupScoreChunkDTO"
+            },
+            "example": {
+              "group_id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+              "metadata": [
+                {
+                  "metadata": [
+                    {
+                      "id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                      "link": "https://www.google.com",
+                      "metadata": {
+                        "key": "value"
+                      },
+                      "tag_set": "test",
+                      "time_stamp": "2021-01-01T00:00:00Z",
+                      "tracking_id": "e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+                      "weight": 1
+                    }
+                  ],
+                  "score": 0.5
+                }
+              ]
+            }
+          }
+        ]
+      },
       "RegenerateMessageData": {
         "type": "object",
         "required": [
@@ -5740,6 +5912,44 @@
                 "key2": "value2"
               },
               "time_stamp": "2021-01-01T00:00:00",
+              "weight": 0.5
+            }
+          ],
+          "score": 0.5
+        }
+      },
+      "ScoreSlimChunks": {
+        "type": "object",
+        "required": [
+          "metadata",
+          "score"
+        ],
+        "properties": {
+          "metadata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SlimChunkMetadata"
+            }
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "example": {
+          "metadata": [
+            {
+              "created_at": "2021-01-01T00:00:00",
+              "id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+              "link": "https://trieve.ai",
+              "metadata": {
+                "key": "value"
+              },
+              "qdrant_point_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+              "tag_set": "tag1,tag2",
+              "time_stamp": "2021-01-01T00:00:00",
+              "tracking_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+              "updated_at": "2021-01-01T00:00:00",
               "weight": 0.5
             }
           ],
@@ -5834,10 +6044,10 @@
                   "value4"
                 ],
                 "range": {
-                  "gt": 0.0,
-                  "gte": 0.0,
-                  "lt": 1.0,
-                  "lte": 1.0
+                  "gt": 0,
+                  "gte": 0,
+                  "lt": 1,
+                  "lte": 1
                 }
               }
             ],
@@ -5849,10 +6059,10 @@
                   "value6"
                 ],
                 "range": {
-                  "gt": 0.0,
-                  "gte": 0.0,
-                  "lt": 1.0,
-                  "lte": 1.0
+                  "gt": 0,
+                  "gte": 0,
+                  "lt": 1,
+                  "lte": 1
                 }
               }
             ],
@@ -5864,10 +6074,10 @@
                   "value2"
                 ],
                 "range": {
-                  "gt": 0.0,
-                  "gte": 0.0,
-                  "lt": 1.0,
-                  "lte": 1.0
+                  "gt": 0,
+                  "gte": 0,
+                  "lt": 1,
+                  "lte": 1
                 }
               }
             ]
@@ -5902,6 +6112,39 @@
             }
           },
           "total_chunk_pages": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SearchChunkResponseTypes": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SearchSlimChunkQueryResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/SearchChunkQueryResponseBody"
+          }
+        ]
+      },
+      "SearchGroupSlimChunksResult": {
+        "type": "object",
+        "required": [
+          "bookmarks",
+          "group",
+          "total_pages"
+        ],
+        "properties": {
+          "bookmarks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScoreSlimChunks"
+            }
+          },
+          "group": {
+            "$ref": "#/components/schemas/ChunkGroup"
+          },
+          "total_pages": {
             "type": "integer",
             "format": "int64"
           }
@@ -6023,6 +6266,54 @@
           }
         }
       },
+      "SearchOverGroupsResponseTypes": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SearchOverGroupsResponseBody"
+          },
+          {
+            "$ref": "#/components/schemas/SearchOverGroupsSlimChunksResponseBody"
+          }
+        ]
+      },
+      "SearchOverGroupsSlimChunksResponseBody": {
+        "type": "object",
+        "required": [
+          "group_chunks",
+          "total_chunk_pages"
+        ],
+        "properties": {
+          "group_chunks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupSlimChunksDTO"
+            }
+          },
+          "total_chunk_pages": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SearchSlimChunkQueryResponseBody": {
+        "type": "object",
+        "required": [
+          "score_chunks",
+          "total_chunk_pages"
+        ],
+        "properties": {
+          "score_chunks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScoreSlimChunks"
+            }
+          },
+          "total_chunk_pages": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "SearchWithinGroupData": {
         "type": "object",
         "required": [
@@ -6107,6 +6398,16 @@
           }
         }
       },
+      "SearchWithinGroupResponseTypes": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SearchGroupsResult"
+          },
+          {
+            "$ref": "#/components/schemas/SearchGroupSlimChunksResult"
+          }
+        ]
+      },
       "SetUserApiKeyRequest": {
         "type": "object",
         "required": [
@@ -6178,6 +6479,73 @@
             }
           ],
           "pos_in_queue": 1
+        }
+      },
+      "SlimChunkMetadata": {
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "weight"
+        ],
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "link": {
+            "type": "string",
+            "nullable": true
+          },
+          "metadata": {
+            "nullable": true
+          },
+          "qdrant_point_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "tag_set": {
+            "type": "string",
+            "nullable": true
+          },
+          "time_stamp": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "tracking_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "weight": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "example": {
+          "created_at": "2021-01-01T00:00:00",
+          "dataset_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+          "id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+          "link": "https://trieve.ai",
+          "metadata": {
+            "key": "value"
+          },
+          "qdrant_point_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+          "tag_set": "tag1,tag2",
+          "time_stamp": "2021-01-01T00:00:00",
+          "tracking_id": "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
+          "updated_at": "2021-01-01T00:00:00",
+          "weight": 0.5
         }
       },
       "SlimGroup": {
@@ -6524,6 +6892,14 @@
           },
           "metadata": {
             "description": "The metadata is a JSON object which can be used to filter chunks. This is useful for when you want to filter chunks by arbitrary metadata. Unlike with tag filtering, there is a performance hit for filtering on metadata. If no metadata is provided, the existing metadata will be used.",
+            "nullable": true
+          },
+          "tag_set": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tag set is a list of tags. This can be used to filter chunks by tag. Unlike with metadata filtering, HNSW indices will exist for each tag such that there is not a performance hit for filtering on them. If no tag_set is provided, the existing tag_set will be used.",
             "nullable": true
           },
           "time_stamp": {
