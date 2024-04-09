@@ -1,6 +1,6 @@
 {
   "name": "@devflowinc/trieve-js-ts-client",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "OpenAPI client for @devflowinc/trieve-js-ts-client",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
