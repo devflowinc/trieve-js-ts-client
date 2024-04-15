@@ -1,7 +1,7 @@
 npmName: "@devflowinc/trieve-js-ts-client"
 projectDescription: "JS and TS client for Trieve API generated from its OpenAPI specification using openapi-generator."
 licenseName: "MIT"
-npmVersion: "0.6.7"
+npmVersion: "0.6.9"
 supportsEs6: true
 withNodeImports: true
 enablePostProcessFile: true
